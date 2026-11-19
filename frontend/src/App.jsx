@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  Sprout, 
-  MapPin, 
-  CloudSun, 
-  Droplet, 
-  History, 
-  HelpCircle, 
-  AlertTriangle, 
-  Calendar, 
-  TrendingUp, 
+import {
+  Sprout,
+  MapPin,
+  CloudSun,
+  Droplet,
+  History,
+  HelpCircle,
+  AlertTriangle,
+  Calendar,
+  TrendingUp,
   Database,
   ArrowRight,
   RefreshCw,
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import LandingPage from './LandingPage.jsx';
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "https://ai-crop-recommendation-1-etw1.onrender.com/api";
 
 // Ideal requirements of crops for displaying comparison charts
 const CROP_IDEALS = {
@@ -54,9 +54,9 @@ const getExplanation = (result, formData) => {
   const crop = result.recommended_crop.toLowerCase();
   const feat = result.estimated_features;
   const isTest = formData.soil_test.use_test;
-  
+
   let explanation = `The model recommended ${result.recommended_crop} based on your local environmental profile in ${formData.location} for the ${formData.season} season. `;
-  
+
   if (crop === 'rice') {
     explanation += `Rice is optimal because it requires water-rich environments; your ${formData.irrigation ? 'irrigation availability' : 'high seasonal rainfall'} provides the high water volume (estimated ${feat.rainfall.toFixed(0)}mm index) needed for rice fields. `;
   } else if (crop === 'maize') {
@@ -72,11 +72,11 @@ const getExplanation = (result, formData) => {
   } else {
     explanation += `This crop fits the N-P-K nutrient profiles (N: ${feat.n.toFixed(0)}, P: ${feat.p.toFixed(0)}, K: ${feat.k.toFixed(0)}) and soil pH (${feat.ph.toFixed(1)}) synthesized for your soil. `;
   }
-  
+
   if (formData.previous_crop.toLowerCase() === 'legumes' && !isTest) {
     explanation += `Since your previous crop was a legume, your soil has a natural nitrogen replenishment boost, making it an ideal time to grow crops that benefit from nitrogen-rich soil. `;
   }
-  
+
   return explanation;
 };
 
@@ -166,12 +166,12 @@ export default function App() {
 
   const updateStats = (historyList) => {
     if (historyList.length === 0) return;
-    
+
     // Count crop distributions
     const crops = historyList.map(h => h.recommended_crop);
     const cropCounts = crops.reduce((acc, c) => ({ ...acc, [c]: (acc[c] || 0) + 1 }), {});
     const topCrop = Object.keys(cropCounts).reduce((a, b) => cropCounts[a] > cropCounts[b] ? a : b, 'Rice');
-    
+
     // Count locations
     const locations = new Set(historyList.map(h => h.location.toLowerCase().trim()));
     // Count soil test usage
@@ -253,19 +253,19 @@ export default function App() {
         </div>
         <div className="relative h-4 w-full bg-navy-100 rounded-full overflow-hidden border border-navy-200/70">
           {/* Estimated / Measured Bar */}
-          <div 
-            style={{ width: `${percentMeasured}%` }} 
+          <div
+            style={{ width: `${percentMeasured}%` }}
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-navy-500 to-navy-700 rounded-full"
           />
           {/* Ideal target range point */}
-          <div 
-            style={{ left: `calc(${percentIdeal}% - 2px)` }} 
+          <div
+            style={{ left: `calc(${percentIdeal}% - 2px)` }}
             className="absolute top-0 h-full w-1 bg-primary-600 z-10"
             title={`Ideal Range: ${ideal} ${unit}`}
           />
           {/* Ideal Range overlay zone */}
-          <div 
-            style={{ left: `calc(${percentIdeal}% - 8px)`, width: '16px' }} 
+          <div
+            style={{ left: `calc(${percentIdeal}% - 8px)`, width: '16px' }}
             className="absolute top-0 h-full bg-primary-500/30 blur-[1px] z-0"
           />
         </div>
@@ -291,7 +291,7 @@ export default function App() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      
+
       {/* Sidebar Navigation */}
       <aside className="w-full lg:w-72 bg-gradient-to-b from-navy-950 to-navy-900 text-navy-100 flex flex-col justify-between border-r border-navy-800/70 shrink-0">
         <div>
@@ -308,31 +308,31 @@ export default function App() {
 
           {/* Navigation Items */}
           <nav className="p-4 space-y-1.5">
-            <button 
-              onClick={() => setActiveTab('dashboard')} 
+            <button
+              onClick={() => setActiveTab('dashboard')}
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${activeTab === 'dashboard' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/25' : 'text-navy-300 hover:bg-white/5 hover:text-white'}`}
             >
               <Database size={18} />
               Dashboard
             </button>
-            <button 
-              onClick={() => setActiveTab('form')} 
+            <button
+              onClick={() => setActiveTab('form')}
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${activeTab === 'form' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/25' : 'text-navy-300 hover:bg-white/5 hover:text-white'}`}
             >
               <Sprout size={18} />
               Get Recommendation
             </button>
             {recommendationResult && (
-              <button 
-                onClick={() => setActiveTab('result')} 
+              <button
+                onClick={() => setActiveTab('result')}
                 className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${activeTab === 'result' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/25' : 'text-navy-300 hover:bg-white/5 hover:text-white'}`}
               >
                 <TrendingUp size={18} />
                 Recommendation Result
               </button>
             )}
-            <button 
-              onClick={() => setActiveTab('history')} 
+            <button
+              onClick={() => setActiveTab('history')}
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${activeTab === 'history' ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/25' : 'text-navy-300 hover:bg-white/5 hover:text-white'}`}
             >
               <History size={18} />
@@ -358,7 +358,7 @@ export default function App() {
 
       {/* Main Workspace Area */}
       <main className="flex-1 flex flex-col min-h-0 bg-[#f5f8fc]">
-        
+
         {/* Top Header Bar */}
         <header className="h-16 px-6 lg:px-8 border-b border-navy-100 bg-white/85 backdrop-blur-md flex items-center justify-between shrink-0 z-30">
           <div className="flex items-center gap-3">
@@ -381,9 +381,9 @@ export default function App() {
               <Sprout size={15} />
               <span className="hidden sm:inline">Home</span>
             </button>
-            <button 
+            <button
               onClick={fetchHistory}
-              title="Refresh Search Logs" 
+              title="Refresh Search Logs"
               className="p-2 rounded-lg text-navy-400 hover:text-navy-700 hover:bg-navy-50 transition-colors"
             >
               <RefreshCw size={18} />
@@ -400,7 +400,7 @@ export default function App() {
 
         {/* Dynamic Pages Container */}
         <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-          
+
           {/* =========================================================================
               TAB: DASHBOARD
               ========================================================================= */}
@@ -412,11 +412,11 @@ export default function App() {
                   <h2 className="text-2xl lg:text-3xl font-extrabold text-navy-900 tracking-tight">Welcome, Farmer Friend!</h2>
                   <p className="text-sm text-slate-500 mt-1">Select crop recommendations customized to your local weather, season, and soil properties.</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setActiveTab('form')}
                   className="flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-primary-600/20 transition-all duration-200 group self-start"
                 >
-                  Get Recommendation 
+                  Get Recommendation
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
@@ -466,14 +466,14 @@ export default function App() {
 
               {/* Agronomic Calendar and Tips section */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* Weather Climatological Info */}
                 <div className="glass-panel p-6 lg:col-span-2 space-y-4">
                   <div className="flex items-center gap-2 mb-2">
                     <CloudSun className="text-primary-600" size={20} />
                     <h3 className="font-extrabold text-navy-900">Seasonal Climate Guides (India)</h3>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="p-4 rounded-xl bg-navy-50 border border-navy-100">
                       <span className="text-[10px] uppercase font-bold text-navy-600 tracking-wider">Summer Season</span>
@@ -536,8 +536,8 @@ export default function App() {
               <div className="glass-panel p-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="font-extrabold text-navy-900">Recent Search Logs</h3>
-                  <button 
-                    onClick={() => setActiveTab('history')} 
+                  <button
+                    onClick={() => setActiveTab('history')}
                     className="text-xs font-bold text-primary-600 hover:text-primary-700 transition-colors"
                   >
                     View All Logs
@@ -597,10 +597,10 @@ export default function App() {
               </div>
 
               <form onSubmit={handleSubmitRecommendation} className="glass-panel p-6 sm:p-8 space-y-6 shadow-lg border-white/50 relative overflow-hidden">
-                
+
                 {/* Header graphic */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-navy-900 via-primary-500 to-primary-400" />
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* Farmer Name */}
                   <div>
@@ -609,8 +609,8 @@ export default function App() {
                     </label>
                     <div className="relative">
                       <User size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         id="farmer_name"
                         placeholder="e.g. Ramesh Kumar"
                         value={formData.farmer_name}
@@ -627,8 +627,8 @@ export default function App() {
                     </label>
                     <div className="relative">
                       <MapPin size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         id="location"
                         placeholder="e.g. Pune, Maharashtra"
                         value={formData.location}
@@ -648,7 +648,7 @@ export default function App() {
                     </label>
                     <div className="relative">
                       <Calendar size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
-                      <select 
+                      <select
                         id="season"
                         value={formData.season}
                         onChange={(e) => handleInputChange('season', e.target.value)}
@@ -667,7 +667,7 @@ export default function App() {
                     </label>
                     <div className="relative">
                       <History size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
-                      <select 
+                      <select
                         id="previous_crop"
                         value={formData.previous_crop}
                         onChange={(e) => handleInputChange('previous_crop', e.target.value)}
@@ -740,8 +740,8 @@ export default function App() {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 p-4 rounded-2xl bg-primary-50/30 border border-primary-100/50 animate-float-short">
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nitrogen (N)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           placeholder="e.g. 80"
                           value={formData.soil_test.n}
                           onChange={(e) => handleSoilTestChange('n', e.target.value)}
@@ -750,8 +750,8 @@ export default function App() {
                       </div>
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Phosphorus (P)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           placeholder="e.g. 45"
                           value={formData.soil_test.p}
                           onChange={(e) => handleSoilTestChange('p', e.target.value)}
@@ -760,8 +760,8 @@ export default function App() {
                       </div>
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Potassium (K)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           placeholder="e.g. 50"
                           value={formData.soil_test.k}
                           onChange={(e) => handleSoilTestChange('k', e.target.value)}
@@ -770,8 +770,8 @@ export default function App() {
                       </div>
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Soil pH</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           step="0.1"
                           placeholder="e.g. 6.5"
                           value={formData.soil_test.ph}
@@ -810,11 +810,11 @@ export default function App() {
               ========================================================================= */}
           {activeTab === 'result' && recommendationResult && (
             <div className="max-w-4xl mx-auto space-y-6">
-              
+
               {/* Header result banner */}
               <div className="glass-panel p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-lg border-primary-100 overflow-hidden relative">
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-primary-500" />
-                
+
                 <div className="flex items-start gap-4">
                   <div className="w-16 h-16 rounded-3xl bg-gradient-crop flex items-center justify-center text-3xl shrink-0 shadow-lg shadow-green-500/10 animate-float">
                     🌾
@@ -827,7 +827,7 @@ export default function App() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button 
+                  <button
                     onClick={() => setActiveTab('form')}
                     className="px-5 py-3 border border-slate-200 hover:border-slate-300 bg-white text-navy-800 rounded-xl text-xs font-bold transition-all"
                   >
@@ -837,10 +837,10 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* Visual crop guide details */}
                 <div className="glass-panel p-6 lg:col-span-2 space-y-6">
-                  
+
                   {/* Why this crop? Card */}
                   <div>
                     <h3 className="font-extrabold text-navy-900 text-sm mb-2 flex items-center gap-1.5">
@@ -867,8 +867,8 @@ export default function App() {
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="w-24 bg-slate-200/50 h-2 rounded-full overflow-hidden hidden sm:block">
-                              <div 
-                                style={{ width: `${(item.probability * 100)}%` }} 
+                              <div
+                                style={{ width: `${(item.probability * 100)}%` }}
                                 className="bg-primary-600 h-full rounded-full"
                               />
                             </div>
@@ -1039,7 +1039,7 @@ export default function App() {
                                 </button>
                               </td>
                             </tr>
-                            
+
                             {/* Expanded Details Row */}
                             {expandedHistoryId === log.id && (
                               <tr>
