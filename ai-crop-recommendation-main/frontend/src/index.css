@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#f5f8fc] text-navy-900 font-sans min-h-screen antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.07) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(30, 58, 95, 0.09) 0px, transparent 55%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+/* Glassmorphism custom classes — clean, premium, navy-tinted */
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-md border border-navy-100/70 shadow-premium rounded-2xl;
+}
+
+.glass-card {
+  @apply bg-white/90 backdrop-blur-sm border border-navy-100/60 shadow-premium rounded-3xl transition-all duration-300 hover:shadow-premium-lg hover:border-primary-200/70;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-navy-900 via-navy-800 to-primary-600;
+}
+
+.bg-gradient-crop {
+  @apply bg-gradient-to-tr from-navy-800 to-primary-500 text-white;
+}
+
+.bg-gradient-brand {
+  @apply bg-gradient-to-r from-navy-950 via-navy-900 to-navy-800;
+}
+
+/* Eyebrow label used across sections */
+.eyebrow {
+  @apply inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-600;
+}
+
+/* Micro-animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float-short {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float-short {
+  animation: float-short 2.4s ease-in-out infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-navy-50 rounded-full;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-navy-300 rounded-full hover:bg-navy-400 transition-colors;
+}
